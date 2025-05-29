@@ -1,5 +1,4 @@
-# Assumption: 
-# Taking from a list of integers to numbers that will then add together to form the targeted value.
+# Assumption: Taking from a list of integers to numbers that will then add together to form the targeted value.
 
 """
 Test:
