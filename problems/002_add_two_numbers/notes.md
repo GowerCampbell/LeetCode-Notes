@@ -1,57 +1,83 @@
-# My Understanding of 002 add two numbers
+# My Understanding of LeetCode #2: Add Two Numbers
 
-## What’s confusing: 
-I think its the core mechanics and how it all comes together, especially when your extracting numbers from an operation and then reversing them into a list with an array of numbers that sit in a node thats apart of a linked list.
+## Problem Overview
+The task is to add two numbers represented as linked lists, where each node contains a single digit, and the digits are stored in **reverse order**. The result should also be a linked list in reverse order. For example, `2 -> 4 -> 3` represents 342, and `5 -> 6 -> 4` represents 465. Adding them gives 807, returned as `7 -> 0 -> 8`.
 
-I found that in the solution the most confusing thing was these two operations and why they are needed:
-carry = total // 10
-digit % 10
+## What's Confusing
+The core mechanics of adding digits from two linked lists and handling the carry can be tricky. Specifically, extracting digits and managing the linked list structure (nodes, pointers, and iteration) feels complex. The operations `carry = total // 10` and `digit = total % 10` are particularly confusing.
 
+## Analogy
+Imagine a card game where each card shows a digit, and the cards are stacked in reverse order (ones place at the bottom, tens place above, etc.). Your job is to add the numbers represented by two stacks and create a new stack for the sum, also in reverse order. If the sum of two digits exceeds 9, you "carry over" an extra card to the next stack.
 
-## Analogy: 
-**"Imagine a card game, where each card showing a digit. The cards are stacked in reverse order (the ones place is at the bottom, tens place above, hundreds place above that, etc. Your job is to add the numbers represented by the stcks and a new stack for the sum, also in reverse order. Remember: You can carry over an extra card when you add up the stack."**
+## Key Insights
 
-## Key Insight: 
-### Whats a linked list? 
-Its like a chain of nodes, where each node has a digit (val) and a pointer to the node (next). 
-For 2 -> 4 -> 3:  
-Researching the use of linked lists; each card holds a digit and a pointer to the next car. The last card points to nothing (end of the pack of cards) 
+### What is a Linked List?
+A linked list is like a chain of nodes, where each node contains:
+- A digit (`val`), representing a single digit of the number.
+- A pointer (`next`) to the next node in the chain.
+- The last node points to `None` (end of the list).
 
-### Viusualize the Addition
-l1 = [1, 4, 3], l2 = [5, 6, 4]
-Reverse order: 2 is the ones place, 4 is the tens place and 3 is the hundreds place (342
-#### Addition: 
-- Ones: 2 + 5 = 7
-- Tens: 4 + 6 = 10 (write 0, carry 1 to the next digit)
-- Hundreds: 3 + 4 + 1 (carry) = 8
-- Result: 7 -> 0 -> (807 in reverse)
-- 
-Carry: When adding numbers (9 + 9 = 18) you write down 8 and carru 1 to the next digit.
-As we move from adding the ones, tens and hundreds we use the "//" and  "%" to seperate them into what get carryed and what stays in the current nodes.
+For example, `2 -> 4 -> 3` represents the number 342 in reverse order:
+- Node 1: `val = 2`, `next` points to Node 2.
+- Node 2: `val = 4`, `next` points to Node 3.
+- Node 3: `val = 3`, `next = None`.
 
-'''
-current.next = ListNode(digit)
-'''
-Creates a new node with the value digit that I stored in the current node
+### Visualizing the Addition
+Given two linked lists:
+- `l1 = 2 -> 4 -> 3` (342)
+- `l2 = 5 -> 6 -> 4` (465)
 
-'''
-cuurent = current.next
-'''
-Moves the current pointer to the newly created node, so you can attach the next digit to it in the itertion.
+We add them digit by digit, starting from the ones place, and handle carries:
+1. **Ones place**: `2 + 5 = 7`. No carry. Result node: `7`.
+2. **Tens place**: `4 + 6 = 10`. Write `0`, carry `1`. Result node: `0`.
+3. **Hundreds place**: `3 + 4 + 1 (carry) = 8`. No carry. Result node: `8`.
+4. **Final result**: `7 -> 0 -> 8` (807 in reverse order).
 
-'''
-l1 = l1.next if l1 else None
-l2 = l2.next if l2 else None
-'''
-Moves either the l1  or l2 pointer to the next node in the first linked list, or sets it to none if there are no more nodes
+### Key Operations Explained
+The operations `carry = total // 10` and `digit = total % 10` are critical for extracting the carry and the current digit:
+- **Modulo (`total % 10`)**: Gets the last digit of the sum. For example, if `total = 18`, then `18 % 10 = 8`, which is the digit to store in the current node.
+- **Integer Division (`total // 10`)**: Determines the carry. For example, `18 // 10 = 1`, which is the carry to pass to the next digit.
 
-All together they add  new digit to the result list (current.next = ListNode(digit))
-Move the result pointer to the new node (current = current.next)
-Advance the input lists to their digits (l1 = l1.next if l1 else None
-l2 = l2.next if l2 else None)
+These operations split the sum into:
+- The digit to keep in the current node (`total % 10`).
+- The carry to add to the next pair of digits (`total // 10`).
 
+### Code Mechanics
+Here’s how the solution works step-by-step:
+1. **Initialize**:
+   - Create a dummy node to simplify list construction.
+   - Set a `current` pointer to build the result list.
+   - Initialize `carry = 0`.
 
+2. **Iterate**:
+   - While there are digits in `l1`, `l2`, or a carry exists:
+     - Get digits: `x = l1.val if l1 else 0`, `y = l2.val if l2 else 0`.
+     - Compute `total = x + y + carry`.
+     - Create a new node with `digit = total % 10`:
+       ```python
+       current.next = ListNode(digit)
+       ```
+     - Update the carry: `carry = total // 10`.
+     - Move pointers:
+       ```python
+       current = current.next
+       l1 = l1.next if l1 else None
+       l2 = l2.next if l2 else None
+       ```
 
+3. **Return**: The result list starts from `dummy.next`.
+
+### Why These Lines Matter
+- **`current.next = ListNode(digit)`**: Creates a new node with the computed digit and attaches it to the result list.
+- **`current = current.next`**: Moves the `current` pointer to the newly created node for the next iteration.
+- **`l1 = l1.next if l1 else None` and `l2 = l2.next if l2 else None`**: Advances the pointers to the next digits in `l1` and `l2`. If a list is exhausted, it sets the pointer to `None` to stop accessing it.
+
+### Putting It Together
+These operations work together to:
+1. Add a new digit to the result list (`current.next = ListNode(digit)`).
+2. Move the result pointer to the new node (`current = current.next`).
+3. Advance the input lists to their next digits (`l1 = l1.next`, `l2 = l2.next`).
+4. Handle the carry for the next iteration.
 
 
 
