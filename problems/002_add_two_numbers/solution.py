@@ -34,7 +34,7 @@ def addTwoNumbers(l1, l2):
 
     # Add digits and carry
     total = x + y + carry
-    carry = tital // 10 #Get carry for next digit 
+    carry = total // 10 #Get carry for next digit 
     digit = total % 10 #Get digit for current node 
 
     #Create new node for this digit
