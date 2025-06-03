@@ -59,13 +59,12 @@ Here’s how the solution works step-by-step:
      - Links the newly created newNode to the current node's 'next' pointer
        ```python
        current.next = newNode
-       current = newNode
        ```
      - Updates the current value with the newNode, prepairing for the next digit of the new current node and linking it.  
      - Update the carry: `carry = total // 10`.
      - Move pointers:
        ```python
-       current = current.next
+       current = newNode
        l1 = l1.next if l1 else None
        l2 = l2.next if l2 else None
        ```
@@ -73,14 +72,14 @@ Here’s how the solution works step-by-step:
 3. **Return**: The result list starts from `dummy.next`.
 
 ### Why These Lines Matter
-- **`current.next = ListNode(digit)`**: Creates a new node with the computed digit and attaches it to the result list.
-- **`current = current.next`**: Moves the `current` pointer to the newly created node for the next iteration.
+- **`newNode = ListNode(total % 10)`)`**: Creates a new node with the computed digit and attaches it to the result list.
+- **`current.next = newNode`**: Moves the `current` pointer to the newly created node for the next iteration.
 - **`l1 = l1.next if l1 else None` and `l2 = l2.next if l2 else None`**: Advances the pointers to the next digits in `l1` and `l2`. If a list is exhausted, it sets the pointer to `None` to stop accessing it.
 
 ### Putting It Together
 These operations work together to:
-1. Add a new digit to the result list (`current.next = ListNode(digit)`).
-2. Move the result pointer to the new node (`current = current.next`).
+1. Add a new digit to the result list (`newNode = ListNode(total % 10)`).
+2. Move the result to the new node (`current.next = newNode`).
 3. Advance the input lists to their next digits (`l1 = l1.next`, `l2 = l2.next`).
 4. Handle the carry for the next iteration.
 
