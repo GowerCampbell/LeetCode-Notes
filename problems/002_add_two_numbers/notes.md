@@ -6,6 +6,8 @@ The task is to add two numbers represented as linked lists, where each node cont
 ## What's Confusing
 The core mechanics of adding digits from two linked lists and handling the carry can be tricky. Specifically, extracting digits and managing the linked list structure (nodes, pointers, and iteration) feels complex. The operations `carry = total // 10` and `digit = total % 10` are particularly confusing.
 
+Especilly, I got caught on an error where I hadn't correctly written the ListNode when I can use ListNode(total % 10) to cretae a newNode to store the data for the next value, repepersenting the one digit.
+
 ## Analogy
 Imagine a card game where each card shows a digit, and the cards are stacked in reverse order (ones place at the bottom, tens place above, etc.). Your job is to add the numbers represented by two stacks and create a new stack for the sum, also in reverse order. If the sum of two digits exceeds 9, you "carry over" an extra card to the next stack.
 
@@ -53,10 +55,13 @@ Here’s how the solution works step-by-step:
    - While there are digits in `l1`, `l2`, or a carry exists:
      - Get digits: `x = l1.val if l1 else 0`, `y = l2.val if l2 else 0`.
      - Compute `total = x + y + carry`.
-     - Create a new node with `digit = total % 10`:
+     - Create a new node with `newNode = ListNode(total % 10)`
+     - Links the newly creted newNode to the current node's 'next' pointer
        ```python
-       current.next = ListNode(digit)
+       current.next = newNode
+       current = newNode
        ```
+     - Updtaes the current value with the newNode, prepairing for the next digit of the new current node and linking it.  
      - Update the carry: `carry = total // 10`.
      - Move pointers:
        ```python
