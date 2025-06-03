@@ -56,12 +56,12 @@ Here’s how the solution works step-by-step:
      - Get digits: `x = l1.val if l1 else 0`, `y = l2.val if l2 else 0`.
      - Compute `total = x + y + carry`.
      - Create a new node with `newNode = ListNode(total % 10)`
-     - Links the newly creted newNode to the current node's 'next' pointer
+     - Links the newly created newNode to the current node's 'next' pointer
        ```python
        current.next = newNode
        current = newNode
        ```
-     - Updtaes the current value with the newNode, prepairing for the next digit of the new current node and linking it.  
+     - Updates the current value with the newNode, prepairing for the next digit of the new current node and linking it.  
      - Update the carry: `carry = total // 10`.
      - Move pointers:
        ```python
