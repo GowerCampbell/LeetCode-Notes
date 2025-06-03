@@ -35,11 +35,11 @@ def addTwoNumbers(l1, l2):
     # Add digits and carry
     total = x + y + carry
     carry = total // 10 #Get carry for next digit 
-    digit = total % 10 #Get digit for current node 
+    newNode = ListNode(total % 10) #Create newNode for added values
 
-    #Create new node for this digit
-    pointer.next = ListNode(digit)
-    pointer = pointer.next
+    #Create a pointer for the next variable
+    pointer.next = newNode
+    pointer = newNode
 
     # Move to next nodes, if they exist
     l1 = l1.next if l1 else None
@@ -50,7 +50,7 @@ return dummy.next
 """
 Conclusion:
 Linked lists are chains, you proccess one node at a time, allowing the digits to be placed in reverse order 
-you start with the lieast sigificant digit to the most, just like manual addition from the left. Handle carries 
+you start with the least sigificant digit to the most, just like manual addition from the left. Handle carries 
 like in school and the carry propagates to the next node. Using a dummy node avoids special cases for the head of
 the result list. Unequal lengths like 9999 + 9 works because we assume 9 -> 0 -> 0 -> 0. Remember to iterate until done.
 """
