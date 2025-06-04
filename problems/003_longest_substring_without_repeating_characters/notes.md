@@ -11,7 +11,10 @@
   "wke" has no repeats → length 3.
 
 Final answer: 3 (not 4, because "pwke" skips characters, which isn’t a substring).
-By using away to track the characters and where they are positioned
+By using away to track the characters and where they are positioned. 
+
+Strings are inherently sequential and proccessing from left to right aligns with how we read analyze text.
+
 
 
 
